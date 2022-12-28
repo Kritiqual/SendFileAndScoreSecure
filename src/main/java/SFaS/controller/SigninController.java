@@ -1,5 +1,6 @@
 package SFaS.controller;
 
+import SFaS.gui.*;
 import SFaS.model.Account;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,21 +17,40 @@ import java.sql.SQLException;
  */
 public class SigninController {
 
-    private static final String FINDUSER = "SELECT COUNT(*) FROM Account WHERE Username=? AND Password=?";
+    private static final String FINDUSER = "SELECT COUNT(*) FROM Account WHERE Username = ? AND Password = ?";
+    private static final String ACCTYPE = "SELECT AccType FROM Account WHERE Username = ? AND Password = ?";
 
-
-    public static String onLoginEvent(Account acc) {
+    public static String onSigninEvent(Account acc) {
         try {
             Connection conn = ConnectDB.getConnection();
+            PreparedStatement ps;
+            ResultSet rs;
 
-            PreparedStatement ps = conn.prepareStatement(FINDUSER);
+            ps = conn.prepareStatement(FINDUSER);
             ps.setString(1, acc.getUsername());
             ps.setString(2, acc.getPassword());
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             rs.next();
-            int ans_fu = rs.getInt(1);
-            if (ans_fu != 1) {
+            if (rs.getInt(1) != 1) {
+                new SigninUI().setVisible(true);
                 return "Không tìm thấy tài khoản!";
+            }
+
+            ps = conn.prepareStatement(ACCTYPE);
+            ps.setString(1, acc.getUsername());
+            ps.setString(2, acc.getPassword());
+            rs = ps.executeQuery();
+            rs.next();
+            switch (rs.getInt(1)) {
+                case 0 -> {
+                    new StudentUI().setVisible(true);
+                }
+                case 1 -> {
+                    new AdminUI().setVisible(true);
+                }
+                case 2 -> {
+                    new TeacherUI().setVisible(true);
+                }
             }
 
             return "Đăng nhập thành công";

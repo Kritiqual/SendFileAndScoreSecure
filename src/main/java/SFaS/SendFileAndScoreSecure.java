@@ -4,7 +4,7 @@
  */
 package SFaS;
 
-import SFaS.gui.Main;
+import SFaS.gui.SigninUI;
 
 /**
  *
@@ -12,6 +12,6 @@ import SFaS.gui.Main;
  */
 public class SendFileAndScoreSecure {
     public static void main(String[] args) {
-        new Main().setVisible(true);
+        new SigninUI().setVisible(true);
     }
 }

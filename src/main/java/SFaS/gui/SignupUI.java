@@ -1,8 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package SFaS.gui;
+
+import SFaS.controller.SignupController;
+import SFaS.model.Account;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,36 +22,29 @@ public class SignupUI extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-		btnG_act = new javax.swing.ButtonGroup();
+        btnG_act = new javax.swing.ButtonGroup();
         labelSignUp = new javax.swing.JLabel();
-        labelFirstName = new javax.swing.JLabel();
-        tfFirstName = new javax.swing.JTextField();
-        labelLastName = new javax.swing.JLabel();
-        tfLastName = new javax.swing.JTextField();
         labelUsernameSU = new javax.swing.JLabel();
         tfUsernameSU = new javax.swing.JTextField();
         labelPasswordSU = new javax.swing.JLabel();
         labelRePassword = new javax.swing.JLabel();
-        pfPassword = new javax.swing.JPasswordField();
-        pfRePassword = new javax.swing.JPasswordField();
+        pfPasswordSU = new javax.swing.JPasswordField();
+        pfRePasswordSU = new javax.swing.JPasswordField();
         btnSignupCF = new javax.swing.JButton();
         btnSignupCC = new javax.swing.JButton();
         btn_act_Teacher = new javax.swing.JRadioButton();
         btn_act_Student = new javax.swing.JRadioButton();
         labelAcctype = new javax.swing.JLabel();
+        btn_act_Admin = new javax.swing.JRadioButton();
+        btnReset = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         labelSignUp.setFont(new java.awt.Font("Cantarell", 0, 24)); // NOI18N
         labelSignUp.setText("TẠO TÀI KHOẢN");
-
-        labelFirstName.setText("First name");
-
-        labelLastName.setText("Last name");
 
         labelUsernameSU.setText("Username");
 
@@ -59,13 +52,12 @@ public class SignupUI extends javax.swing.JFrame {
 
         labelRePassword.setText("Re-type");
 
-        pfPassword.addActionListener(new java.awt.event.ActionListener() {
+        btnSignupCF.setText("SIGN UP");
+        btnSignupCF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pfPasswordActionPerformed(evt);
+                btnSignupCFActionPerformed(evt);
             }
         });
-
-        btnSignupCF.setText("SIGN UP");
 
         btnSignupCC.setText("CANCEL");
         btnSignupCC.addActionListener(new java.awt.event.ActionListener() {
@@ -74,113 +66,136 @@ public class SignupUI extends javax.swing.JFrame {
             }
         });
 
+        btnG_act.add(btn_act_Teacher);
         btn_act_Teacher.setText("Teacher");
-        btn_act_Teacher.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_act_TeacherActionPerformed(evt);
-            }
-        });
-		btn_act_Teacher.setSelected(true);
 
+        btnG_act.add(btn_act_Student);
         btn_act_Student.setText("Student");
 
         labelAcctype.setText("Account type");
 
-		btnG_act.add(btn_act_Student);
-		btnG_act.add(btn_act_Teacher);
+        btnG_act.add(btn_act_Admin);
+        btn_act_Admin.setSelected(true);
+        btn_act_Admin.setText("Admin");
+
+        btnReset.setText("RESET");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(159, 159, 159)
+                .addComponent(labelSignUp)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelUsernameSU)
+                        .addGap(44, 44, 44)
+                        .addComponent(tfUsernameSU))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelPasswordSU)
+                        .addGap(47, 47, 47)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelUsernameSU)
-                            .addComponent(labelFirstName)
-                            .addComponent(labelAcctype))
+                            .addComponent(pfRePasswordSU, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(pfPasswordSU)))
+                    .addComponent(labelRePassword)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelAcctype)
                         .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pfPassword)
-                            .addComponent(tfUsernameSU)
-                            .addComponent(pfRePassword)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btn_act_Teacher)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btn_act_Student))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(labelSignUp)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(tfFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(labelLastName))))
-                                .addGap(18, 18, 18)
-                                .addComponent(tfLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(btn_act_Admin)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_act_Student)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_act_Teacher))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnSignupCF, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSignupCC, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelPasswordSU)
-                            .addComponent(labelRePassword))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(btnSignupCF, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSignupCC, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(labelSignUp)
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelLastName)
-                    .addComponent(tfLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelFirstName))
+                    .addComponent(tfUsernameSU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelUsernameSU))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_act_Student)
                     .addComponent(labelAcctype)
-                    .addComponent(btn_act_Teacher))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfUsernameSU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelUsernameSU))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(btn_act_Teacher)
+                    .addComponent(btn_act_Admin))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelPasswordSU)
-                    .addComponent(pfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pfPasswordSU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelRePassword)
-                    .addComponent(pfRePassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pfRePasswordSU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSignupCF)
-                    .addComponent(btnSignupCC))
-                .addGap(38, 38, 38))
+                    .addComponent(btnReset)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnSignupCF)
+                        .addComponent(btnSignupCC)))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSignupCFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignupCFActionPerformed
+        try {
+            String username = tfUsernameSU.getText().trim();
+            var password = String.valueOf(pfPasswordSU.getPassword()).trim();
+            var repassword = String.valueOf(pfRePasswordSU.getPassword()).trim();
+            int acctype = 1;
+            if (btn_act_Student.isSelected()) {
+                acctype = 0;
+            } else if (btn_act_Teacher.isSelected()) {
+                acctype = 2;
+            }
+
+            if ("".equals(username) || "".equals(password) || "".equals(repassword)) {
+                throw new Exception("Không được để trống thông tin!");
+            }
+
+            if (!repassword.equals(password)) {
+                throw new Exception("Mật khẩu không trùng khớp!");
+            }
+
+            JOptionPane.showMessageDialog(this.getContentPane(), SignupController.onSignupEvent(new Account(username, password, acctype)), "Thông báo!", JOptionPane.OK_OPTION);
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this.getContentPane(), e.getMessage(), "Thông Báo", JOptionPane.OK_OPTION);
+        }
+    }//GEN-LAST:event_btnSignupCFActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        tfUsernameSU.setText("");
+        pfPasswordSU.setText("");
+        pfRePasswordSU.setText("");
+        btn_act_Admin.setSelected(true);
+    }//GEN-LAST:event_btnResetActionPerformed
+
     private void btnSignupCCActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSignupCCActionPerformed
-        dispose();
-        new Main().setVisible(true);
+        new SigninUI().setVisible(true);
+        this.dispose();
     }// GEN-LAST:event_btnSignupCCActionPerformed
-
-    private void pfPasswordActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_pfPasswordActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_pfPasswordActionPerformed
-
-    private void btn_act_TeacherActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_act_TeacherActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_btn_act_TeacherActionPerformed
 
     /**
      * @param args the command line arguments
@@ -218,22 +233,20 @@ public class SignupUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup btnG_act;
+    private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSignupCC;
     private javax.swing.JButton btnSignupCF;
+    private javax.swing.JRadioButton btn_act_Admin;
     private javax.swing.JRadioButton btn_act_Student;
     private javax.swing.JRadioButton btn_act_Teacher;
-    private javax.swing.ButtonGroup btnG_act;
     private javax.swing.JLabel labelAcctype;
-    private javax.swing.JLabel labelFirstName;
-    private javax.swing.JLabel labelLastName;
     private javax.swing.JLabel labelPasswordSU;
     private javax.swing.JLabel labelRePassword;
     private javax.swing.JLabel labelSignUp;
     private javax.swing.JLabel labelUsernameSU;
-    private javax.swing.JPasswordField pfPassword;
-    private javax.swing.JPasswordField pfRePassword;
-    private javax.swing.JTextField tfFirstName;
-    private javax.swing.JTextField tfLastName;
+    private javax.swing.JPasswordField pfPasswordSU;
+    private javax.swing.JPasswordField pfRePasswordSU;
     private javax.swing.JTextField tfUsernameSU;
     // End of variables declaration//GEN-END:variables
 }

@@ -51,7 +51,7 @@ public class Account extends BaseModel {
     @Override
     public Object[] toObjectArrayData() {
         Object[] answer = new Object[3];
-        String[] AccTypes = {"Admin", "Teacher", "Student"};
+        String[] AccTypes = {"Student", "Admin", "Teacher"};
         answer[0] = Username;
         answer[1] = Password;
         answer[2] = AccTypes[AccType];

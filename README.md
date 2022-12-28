@@ -1,49 +1,23 @@
 # SendFileAndScoreSecure
 Đây là repo bài tập lớn của Nhóm 16
 
-# Cài đặt
-1. Clone repo này
-2. Cài đặt Netbeans IDE
-3. Cài đặt SQL Server
-- Lưu ý: Hãy sửa lại PASSWORD trong file `nơi-chứa-thư-mục-clone/src/main/java/SFaS/controller/SigninController.java` tương ứng
-4. Cài đặt jdbc cho sql server
-- Hướng dẫn bật tab Projects:
-    > Bấm `Ctrl + 1` hoặc `Windows > Projects`
+# Cài đặt môi trường
+1. Clone hoặc tải xuống repo này, có thể tải xuống thư mục Downloads
 
-- Trong tab `Projects`, mục `Dependencies`:
-    > Nếu đã có `mssql-jdbc-...jar` thì không cần tiếp tục
+2. Cài đặt:
+- [JDK](https://download.oracle.com/java/19/latest/jdk-19_windows-x64_bin.exe)
+- [Netbeans IDE](https://netbeans.apache.org/download/nb16/index.html)
+- [SQL Server](https://learn.microsoft.com/en-us/sql/database-engine/install-windows/install-sql-server?view=sql-server-ver16)
 
-- Cài đặt:
-    > Trong file `nơi-chứa-thư-mục-clone/pom.xml`:
-    >
-    > Có thể sửa lại như sau:
-    > ```
-    > <?xml version="1.0" encoding="UTF-8"?>
-    > <project xmlns="http://maven.apache.org/POM/4.0.0"
-    >     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    >     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    >     <modelVersion>4.0.0</modelVersion>
-    >     <groupId>n10.SFaS</groupId>
-    >     <artifactId>SendFileAndScoreSecure</artifactId>
-    >     <version>1.0-SNAPSHOT</version>
-    >     <packaging>jar</packaging>
-    >     <dependencies>
-    >         <dependency>
-    >             <groupId>com.microsoft.sqlserver</groupId>
-    >             <artifactId>mssql-jdbc</artifactId>
-    >             <version>11.2.1.jre18</version>
-    >         </dependency>
-    >     </dependencies>
-    >     <properties>
-    >         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    >         <maven.compiler.source>19</maven.compiler.source>
-    >         <maven.compiler.target>19</maven.compiler.target>
-    >         <exec.mainClass>SFaS.SendFileAndScoreSecure</exec.mainClass>
-    >     </properties>
-    > </project>
-    > ```
-    >
-    > Chuột phải vào `mssql-jdbc-...jar` > Chọn `Manually install artifacts` > Bấm vào `Browse` > Tìm dến `nơi-chứa-thư-mục-clone/lib` > Chọn file `mssql-jdbc-...jar` > Chọn `Install locally`
+3. Mở project bằng Netbeans
+- Ngay khi mở projects lên thông thường sẽ có sẵn mssql-jdbc
+    > Kiểm tra trong tab Projects (bấm `Ctrl + 1`) > trong mục Dependencies > Có file mssql-...jar là oke
+- Sửa lại PASSWORD trong file SigninController.java bằng password vừa tạo từ bước 2
 
-- Chạy chương trình:
-    > Bấm 'F6'
+3. Nếu chưa có, cài đặt jdbc cho sql server:
+- Chuột phải mục Dependencies > Chọn `Download Declared Dependencies`
+
+4. Chạy chương trình:
+- Khởi chạy SQL Server và ...
+- Chạy project
+    > Run > Run project
