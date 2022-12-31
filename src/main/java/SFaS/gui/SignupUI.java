@@ -35,11 +35,9 @@ public class SignupUI extends javax.swing.JFrame {
         pfRePasswordSU = new javax.swing.JPasswordField();
         btnSignupCF = new javax.swing.JButton();
         btnSignupCC = new javax.swing.JButton();
-        btn_act_Teacher = new javax.swing.JRadioButton();
-        btn_act_Student = new javax.swing.JRadioButton();
         labelAcctype = new javax.swing.JLabel();
-        btn_act_Admin = new javax.swing.JRadioButton();
         btnReset = new javax.swing.JButton();
+        cbAdmin = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,17 +64,7 @@ public class SignupUI extends javax.swing.JFrame {
             }
         });
 
-        btnG_act.add(btn_act_Teacher);
-        btn_act_Teacher.setText("Teacher");
-
-        btnG_act.add(btn_act_Student);
-        btn_act_Student.setText("Student");
-
-        labelAcctype.setText("Account type");
-
-        btnG_act.add(btn_act_Admin);
-        btn_act_Admin.setSelected(true);
-        btn_act_Admin.setText("Admin");
+        labelAcctype.setText("Is Admin?");
 
         btnReset.setText("RESET");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
@@ -85,72 +73,71 @@ public class SignupUI extends javax.swing.JFrame {
             }
         });
 
+        cbAdmin.setMaximumSize(new java.awt.Dimension(23, 25));
+        cbAdmin.setMinimumSize(new java.awt.Dimension(23, 25));
+        cbAdmin.setName(""); // NOI18N
+        cbAdmin.setPreferredSize(new java.awt.Dimension(23, 25));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(159, 159, 159)
-                .addComponent(labelSignUp)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelUsernameSU)
-                        .addGap(44, 44, 44)
-                        .addComponent(tfUsernameSU))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelPasswordSU)
-                        .addGap(47, 47, 47)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pfRePasswordSU, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(pfPasswordSU)))
-                    .addComponent(labelRePassword)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelAcctype)
-                        .addGap(29, 29, 29)
-                        .addComponent(btn_act_Admin)
+                            .addComponent(labelPasswordSU)
+                            .addComponent(labelUsernameSU)
+                            .addComponent(labelRePassword))
                         .addGap(18, 18, 18)
-                        .addComponent(btn_act_Student)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_act_Teacher))
-                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pfRePasswordSU)
+                            .addComponent(pfPasswordSU)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(tfUsernameSU)
+                                .addGap(18, 18, 18)
+                                .addComponent(labelAcctype)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(btnSignupCF, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnSignupCC, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelSignUp)
+                .addGap(162, 162, 162))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(6, 6, 6)
                 .addComponent(labelSignUp)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfUsernameSU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelUsernameSU))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_act_Student)
-                    .addComponent(labelAcctype)
-                    .addComponent(btn_act_Teacher)
-                    .addComponent(btn_act_Admin))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelPasswordSU)
-                    .addComponent(pfPasswordSU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelRePassword)
-                    .addComponent(pfRePasswordSU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnReset)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnSignupCF)
-                        .addComponent(btnSignupCC)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfUsernameSU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelUsernameSU)
+                            .addComponent(labelAcctype))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelPasswordSU)
+                            .addComponent(pfPasswordSU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(pfRePasswordSU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelRePassword))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSignupCF)
+                            .addComponent(btnReset)
+                            .addComponent(btnSignupCC)))
+                    .addComponent(cbAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
@@ -163,11 +150,9 @@ public class SignupUI extends javax.swing.JFrame {
             String username = tfUsernameSU.getText().trim();
             var password = String.valueOf(pfPasswordSU.getPassword()).trim();
             var repassword = String.valueOf(pfRePasswordSU.getPassword()).trim();
-            int acctype = 1;
-            if (btn_act_Student.isSelected()) {
-                acctype = 0;
-            } else if (btn_act_Teacher.isSelected()) {
-                acctype = 2;
+            int acctype = 0;
+            if (cbAdmin.isSelected()) {
+                acctype = 1;
             }
 
             if ("".equals(username) || "".equals(password) || "".equals(repassword)) {
@@ -189,7 +174,7 @@ public class SignupUI extends javax.swing.JFrame {
         tfUsernameSU.setText("");
         pfPasswordSU.setText("");
         pfRePasswordSU.setText("");
-        btn_act_Admin.setSelected(true);
+        cbAdmin.setSelected(false);
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnSignupCCActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSignupCCActionPerformed
@@ -237,9 +222,7 @@ public class SignupUI extends javax.swing.JFrame {
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSignupCC;
     private javax.swing.JButton btnSignupCF;
-    private javax.swing.JRadioButton btn_act_Admin;
-    private javax.swing.JRadioButton btn_act_Student;
-    private javax.swing.JRadioButton btn_act_Teacher;
+    private javax.swing.JCheckBox cbAdmin;
     private javax.swing.JLabel labelAcctype;
     private javax.swing.JLabel labelPasswordSU;
     private javax.swing.JLabel labelRePassword;

@@ -43,13 +43,10 @@ public class SigninController {
             rs.next();
             switch (rs.getInt(1)) {
                 case 0 -> {
-                    new StudentUI().setVisible(true);
+                    new TeacherUI().setVisible(true);
                 }
                 case 1 -> {
                     new AdminUI().setVisible(true);
-                }
-                case 2 -> {
-                    new TeacherUI().setVisible(true);
                 }
             }
 

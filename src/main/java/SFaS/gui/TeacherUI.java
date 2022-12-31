@@ -69,10 +69,8 @@ public class TeacherUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TeacherUI().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new TeacherUI().setVisible(true);
         });
     }
 

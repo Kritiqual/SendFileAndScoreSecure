@@ -4,6 +4,8 @@
  */
 package SFaS.gui;
 
+import SFaS.gui.AdminControl.*;
+
 /**
  *
  * @author kritiqual
@@ -24,23 +26,17 @@ public class AdminUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         labelAdminUI = new javax.swing.JLabel();
-        paneControl = new javax.swing.JTabbedPane();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jTabbedPane3 = new javax.swing.JTabbedPane();
-        jTabbedPane4 = new javax.swing.JTabbedPane();
         btnExit = new javax.swing.JButton();
+        btnAccountControl = new javax.swing.JButton();
+        btnStudentControl = new javax.swing.JButton();
+        btnClassControl = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         labelAdminUI.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelAdminUI.setText("ADMINISTRATOR");
         labelAdminUI.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        paneControl.addTab("Account", jTabbedPane1);
-        paneControl.addTab("Student", jTabbedPane3);
-        paneControl.addTab("Class", jTabbedPane4);
 
         btnExit.setText("EXIT");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
@@ -49,33 +45,57 @@ public class AdminUI extends javax.swing.JFrame {
             }
         });
 
+        btnAccountControl.setText("QUẢN LÝ TÀI KHOẢN");
+        btnAccountControl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAccountControlActionPerformed(evt);
+            }
+        });
+
+        btnStudentControl.setText("QUẢN LÝ SINH VIÊN");
+        btnStudentControl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStudentControlActionPerformed(evt);
+            }
+        });
+
+        btnClassControl.setText("QUẢN LÝ LỚP");
+        btnClassControl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClassControlActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(304, 304, 304)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelAdminUI)
-                    .addComponent(jLabel1))
-                .addContainerGap(285, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(paneControl)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAccountControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnStudentControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnClassControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(192, 192, 192)
+                .addComponent(labelAdminUI)
+                .addContainerGap(191, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addGap(6, 6, 6)
                 .addComponent(labelAdminUI)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(paneControl, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnAccountControl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnStudentControl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnClassControl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnExit)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -89,6 +109,21 @@ public class AdminUI extends javax.swing.JFrame {
         new SigninUI().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnAccountControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccountControlActionPerformed
+        new AccountControl().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnAccountControlActionPerformed
+
+    private void btnStudentControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStudentControlActionPerformed
+        new StudentControl().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnStudentControlActionPerformed
+
+    private void btnClassControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClassControlActionPerformed
+        new ClassControl().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnClassControlActionPerformed
 
     /**
      * @param args the command line arguments
@@ -124,12 +159,10 @@ public class AdminUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAccountControl;
+    private javax.swing.JButton btnClassControl;
     private javax.swing.JButton btnExit;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTabbedPane jTabbedPane3;
-    private javax.swing.JTabbedPane jTabbedPane4;
+    private javax.swing.JButton btnStudentControl;
     private javax.swing.JLabel labelAdminUI;
-    private javax.swing.JTabbedPane paneControl;
     // End of variables declaration//GEN-END:variables
 }

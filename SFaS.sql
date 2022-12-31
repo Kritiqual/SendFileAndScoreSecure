@@ -32,15 +32,28 @@ CREATE TABLE Teacher (
     TeacherFct NVARCHAR(20)
 )
 
+CREATE TABLE ClassMDL (
+    ClassName VARCHAR(25) CONSTRAINT pk_ClassName PRIMARY KEY,
+    TeacherName VARCHAR(25) NOT NULL
+)
+
 ------- Insert data -------
 INSERT INTO Account (Username, Password, AccType)
 VALUES
     ('admin', 'adm123', 1),
-    ('teacher', 'tch122', 2),
-    ('student', 'std123', 0);
+    ('teacher', 'tch122', 0);
 
-SELECT COUNT(*) FROM Account WHERE Username = 'admin' AND Password = 'adm123'
+INSERT INTO Teacher
+VALUES
+    ('1', 'Teacher A', 'Prof', '0123456789', 'Computer Science'),
+    ('2', 'Teacher B', 'Prof', '0124356789', 'Electricity');
+
+INSERT INTO ClassMDL
+VALUES
+    ('Computer Sciene', 'Teacher A'),
+    ('Electricity', 'Teacher B');
 
 SELECT * FROM Account
+SELECT * FROM ClassMDL
 --> Insert data
 
