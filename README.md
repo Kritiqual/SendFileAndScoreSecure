@@ -18,6 +18,6 @@
 - Chuột phải mục Dependencies > Chọn `Download Declared Dependencies`
 
 4. Chạy chương trình:
-- Khởi chạy SQL Server và ...
+- Khởi chạy SQL Server và chay file SFaS.sql
 - Chạy project
     > Run > Run project
