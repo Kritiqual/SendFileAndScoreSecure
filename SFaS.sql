@@ -8,12 +8,16 @@
  */
 
 USE master
+GO
 
 DROP DATABASE IF EXISTS SFaS
+GO
 
 CREATE DATABASE SFaS
+GO
 
 USE SFaS
+GO
 
 ------- Table -------
 -- Account --
@@ -22,7 +26,7 @@ CREATE TABLE Account (
     Password VARCHAR(16) NOT NULL,
     AccType INT NOT NULL DEFAULT 0 -- 0: Student, 1: admin, 2: Teacher
 )
-
+GO
 -- Teacher --
 CREATE TABLE Teacher (
     TeacherID VARCHAR(15) CONSTRAINT pk_TchID PRIMARY KEY,
@@ -31,26 +35,30 @@ CREATE TABLE Teacher (
     TeacherTel VARCHAR(11),
     TeacherFct NVARCHAR(20)
 )
+GO
 
 CREATE TABLE ClassMDL (
     ClassName VARCHAR(25) CONSTRAINT pk_ClassName PRIMARY KEY,
     TeacherName VARCHAR(25) NOT NULL
 )
+GO
 
 ------- Insert data -------
 INSERT INTO Account (Username, Password, AccType)
 VALUES
     ('admin', 'adm123', 1),
     ('teacher', 'tch122', 0);
+GO
 
 INSERT INTO Teacher
 VALUES
     ('1', 'Teacher A', 'Prof', '0123456789', 'Computer Science'),
     ('2', 'Teacher B', 'Prof', '0124356789', 'Electricity');
+GO
 
 INSERT INTO ClassMDL
 VALUES
     ('Computer Sciene', 'Teacher A'),
     ('Electricity', 'Teacher B');
-
+GO
 
