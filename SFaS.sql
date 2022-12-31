@@ -53,7 +53,4 @@ VALUES
     ('Computer Sciene', 'Teacher A'),
     ('Electricity', 'Teacher B');
 
-SELECT * FROM Account
-SELECT * FROM ClassMDL
---> Insert data
 
