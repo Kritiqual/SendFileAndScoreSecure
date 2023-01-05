@@ -8,20 +8,27 @@ package SFaS.model;
  *
  * @author kritiqual
  */
-public class Account extends BaseModel {
+public class Account {
 
     private String Username, Password;
-    private int AccType;
+    private int IsAdmin, AccID;
 
     public Account(String Username, String Password) {
         this.Username = Username;
         this.Password = Password;
     }
 
-    public Account(String Username, String Password, int AccType) {
+    public Account(String Username, String Password, int IsAdmin) {
         this.Username = Username;
         this.Password = Password;
-        this.AccType = AccType;
+        this.IsAdmin = IsAdmin;
+    }
+
+    public Account(String Username, String Password, int IsAdmin, int AccID) {
+        this.Username = Username;
+        this.Password = Password;
+        this.IsAdmin = IsAdmin;
+        this.AccID = AccID;
     }
 
     public String getUsername() {
@@ -40,21 +47,19 @@ public class Account extends BaseModel {
         this.Password = Password;
     }
 
-    public int getAccType() {
-        return AccType;
+    public int getIsAdmin() {
+        return IsAdmin;
     }
 
-    public void setAccType(int AccType) {
-        this.AccType = AccType;
+    public void setIsAdmin(int IsAdmin) {
+        this.IsAdmin = IsAdmin;
     }
 
-    @Override
-    public Object[] toObjectArrayData() {
-        Object[] answer = new Object[3];
-        String[] AccTypes = {"Student", "Admin", "Teacher"};
-        answer[0] = Username;
-        answer[1] = Password;
-        answer[2] = AccTypes[AccType];
-        return answer;
+    public int getAccID() {
+        return AccID;
+    }
+
+    public void setAccID(int AccID) {
+        this.AccID = AccID;
     }
 }

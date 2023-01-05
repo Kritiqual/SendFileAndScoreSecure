@@ -34,7 +34,7 @@ public class SignupController {
             ps = conn.prepareStatement(ADDACC);
             ps.setString(1, acc.getUsername());
             ps.setString(2, acc.getPassword());
-            ps.setInt(3, acc.getAccType());
+            ps.setInt(3, acc.getIsAdmin());
             ps.executeUpdate();
 
             return "Đăng ký thành công";

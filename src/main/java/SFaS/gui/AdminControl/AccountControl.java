@@ -4,19 +4,17 @@
  */
 package SFaS.gui.AdminControl;
 
-import SFaS.controller.AddAccountController;
 import SFaS.controller.ConnectDB;
-import SFaS.controller.DeleteAccountController;
-import SFaS.controller.EditAccountController;
+import SFaS.controller.AccountController;
 import SFaS.gui.*;
 import SFaS.model.Account;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -50,13 +48,20 @@ public class AccountControl extends javax.swing.JFrame {
         tfUsername = new javax.swing.JTextField();
         labelAdminCb = new javax.swing.JLabel();
         cbAdmin = new javax.swing.JCheckBox();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        spAccountList = new javax.swing.JScrollPane();
         tableAccountList = new javax.swing.JTable();
         btnAddAccount = new javax.swing.JButton();
         btnResetInfo = new javax.swing.JButton();
         tfPassword = new javax.swing.JTextField();
+        labelID = new javax.swing.JLabel();
+        tfID = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         labelAccountControl.setText("QUẢN LÝ TÀI KHOẢN");
 
@@ -91,40 +96,14 @@ public class AccountControl extends javax.swing.JFrame {
         cbAdmin.setMinimumSize(new java.awt.Dimension(23, 25));
         cbAdmin.setPreferredSize(new java.awt.Dimension(23, 25));
 
-        tableAccountList.setBorder(new javax.swing.border.MatteBorder(null));
-        tableAccountList.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Username", "Password", "Is Admin"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        tableAccountList.setModel(buildTableModel());
         tableAccountList.getTableHeader().setReorderingAllowed(false);
         tableAccountList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableAccountListMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tableAccountList);
-        if (tableAccountList.getColumnModel().getColumnCount() > 0) {
-            tableAccountList.getColumnModel().getColumn(2).setPreferredWidth(10);
-        }
+        spAccountList.setViewportView(tableAccountList);
 
         btnAddAccount.setText("ADD");
         btnAddAccount.addActionListener(new java.awt.event.ActionListener() {
@@ -140,6 +119,11 @@ public class AccountControl extends javax.swing.JFrame {
             }
         });
 
+        labelID.setText("ID");
+
+        tfID.setEditable(false);
+        tfID.setFocusable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -149,15 +133,19 @@ public class AccountControl extends javax.swing.JFrame {
                 .addComponent(labelAccountControl)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelUsernameAC)
-                                    .addComponent(labelPasswordAC))
+                                    .addComponent(labelID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(labelUsernameAC)
+                                            .addComponent(labelPasswordAC))
+                                        .addGap(0, 0, Short.MAX_VALUE)))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
@@ -166,27 +154,32 @@ public class AccountControl extends javax.swing.JFrame {
                                         .addComponent(labelAdminCb)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(cbAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(tfPassword)))
+                                    .addComponent(tfPassword)
+                                    .addComponent(tfID)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(btnEditAccount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                                    .addComponent(btnAddAccount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(btnEditAccount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnAddAccount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnResetInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnDeleteAccount, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE))))
+                                    .addComponent(btnResetInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnDeleteAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(spAccountList, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelAccountControl)
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelID))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(labelUsernameAC)
@@ -205,15 +198,53 @@ public class AccountControl extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnEditAccount)
                             .addComponent(btnResetInfo)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(spAccountList, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBack)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    public static DefaultTableModel buildTableModel() {
+        try {
+            Connection conn = ConnectDB.getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Account");
+            ResultSet rs = ps.executeQuery();
+            ResultSetMetaData metaData = rs.getMetaData();
+
+            // names of columns
+            Vector<String> columnNames = new Vector<String>();
+            int columnCount = metaData.getColumnCount();
+            for (int column = 1; column <= columnCount; column++) {
+                columnNames.add(metaData.getColumnName(column));
+            }
+
+            // data of the table
+            Vector<Vector<Object>> tbdata = new Vector<Vector<Object>>();
+            while (rs.next()) {
+                Vector<Object> data = new Vector<Object>();
+                data.add(rs.getInt(1));
+                data.add(rs.getString(2));
+                data.add(rs.getString(3));
+                data.add(rs.getBoolean(4));
+                tbdata.add(data);
+            }
+
+            boolean[] isEditable = {false, false, false, false};
+            return new DefaultTableModel(tbdata, columnNames) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    // make read only fields except column 0,13,14
+                    return isEditable[column];
+                }
+            };
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         new AdminUI().setVisible(true);
@@ -222,37 +253,18 @@ public class AccountControl extends javax.swing.JFrame {
 
     private void btnEditAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAccountActionPerformed
         try {
-            Connection conn = ConnectDB.getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Account");
-            ResultSet rs = ps.executeQuery();
-            String uncheck = String.valueOf(rs.getString("Username"));
-            String pwcheck = String.valueOf(rs.getString("Password"));
-            boolean iacheck = rs.getInt("AccType") == 1;
-
             String username = tfUsername.getText().trim();
             String password = tfPassword.getText().trim();
-            int acctype = 0;
+            int isadmin = 0;
             if (cbAdmin.isSelected()) {
-                acctype = 1;
+                isadmin = 1;
             }
-            boolean act = acctype == 0;
-
-            Account acc = new Account(username, password, acctype);
-            String edit = "UPDATE Account";
-            if (!uncheck.equals(username)) {
-                edit += " SET Username = ?";
-            }
-            if (!pwcheck.equals(password)) {
-                edit += " SET Password = ?";
-            }
-            if (!iacheck == act) {
-                edit += " SET AccType = ?";
-            }
-
-            JOptionPane.showMessageDialog(this.getContentPane(), EditAccountController.onEditEvent(acc, edit), "Thông báo!", JOptionPane.INFORMATION_MESSAGE);
-            UpdateTable();
+            var accid = Integer.valueOf(tableAccountList.getModel().getValueAt(tableAccountList.getSelectedRow(), 0).toString());
+            JOptionPane.showMessageDialog(this.getContentPane(), AccountController.onEditEvent(new Account(username, password, isadmin, accid)), "Thông báo!", JOptionPane.INFORMATION_MESSAGE);
+            tableAccountList.revalidate();
             this.dispose();
-        } catch (HeadlessException | SQLException e) {
+            new AccountControl().setVisible(true);
+        } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(this.getContentPane(), e.getMessage(), "Thông Báo", JOptionPane.OK_OPTION);
         }
     }//GEN-LAST:event_btnEditAccountActionPerformed
@@ -261,18 +273,19 @@ public class AccountControl extends javax.swing.JFrame {
         try {
             String username = tfUsername.getText().trim();
             String password = tfPassword.getText().trim();
-            int acctype = 0;
+            int isadmin = 0;
             if (cbAdmin.isSelected()) {
-                acctype = 1;
+                isadmin = 1;
             }
 
             if ("".equals(username) || "".equals(password)) {
                 throw new Exception("Không được để trống thông tin!");
             }
 
-            JOptionPane.showMessageDialog(this.getContentPane(), AddAccountController.onSignupEvent(new Account(username, password, acctype)), "Thông báo!", JOptionPane.INFORMATION_MESSAGE);
-            UpdateTable();
+            JOptionPane.showMessageDialog(this.getContentPane(), AccountController.onAddEvent(new Account(username, password, isadmin)), "Thông báo!", JOptionPane.INFORMATION_MESSAGE);
+            tableAccountList.revalidate();
             this.dispose();
+            new AccountControl().setVisible(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this.getContentPane(), e.getMessage(), "Thông Báo", JOptionPane.OK_OPTION);
         }
@@ -280,15 +293,14 @@ public class AccountControl extends javax.swing.JFrame {
 
     private void btnDeleteAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteAccountActionPerformed
         try {
-            String username = tableAccountList.getModel().getValueAt(tableAccountList.getSelectedRow(), 0).toString();
-            JOptionPane.showMessageDialog(this.getContentPane(), DeleteAccountController.onDeleteEvent(username), "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
-            UpdateTable();
+            String username = tableAccountList.getModel().getValueAt(tableAccountList.getSelectedRow(), 1).toString();
+            JOptionPane.showMessageDialog(this.getContentPane(), AccountController.onDeleteEvent(username), "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
+            tableAccountList.revalidate();
             this.dispose();
-
+            new AccountControl().setVisible(true);
         } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(this.getContentPane(), e.getMessage(), "Thông Báo", JOptionPane.OK_OPTION);
         }
-
     }//GEN-LAST:event_btnDeleteAccountActionPerformed
 
     private void btnResetInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetInfoActionPerformed
@@ -298,16 +310,22 @@ public class AccountControl extends javax.swing.JFrame {
     private void tableAccountListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableAccountListMouseClicked
         int selected = tableAccountList.getSelectedRow();
         TableModel model = tableAccountList.getModel();
-        tfUsername.setText(model.getValueAt(selected, 0).toString());
-        tfPassword.setText(model.getValueAt(selected, 1).toString());
+        tfID.setText(model.getValueAt(selected, 0).toString());
+        tfUsername.setText(model.getValueAt(selected, 1).toString());
+        tfPassword.setText(model.getValueAt(selected, 2).toString());
         boolean checked = false;
-        if ((boolean) model.getValueAt(selected, 2)) {
+        if ((boolean) model.getValueAt(selected, 3)) {
             checked = true;
         }
         cbAdmin.setSelected(checked);
     }//GEN-LAST:event_tableAccountListMouseClicked
 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        new AccountControl().setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
+
     private void onClear() {
+        tfID.setText("");
         tfUsername.setText("");
         tfPassword.setText("");
         cbAdmin.setSelected(false);
@@ -316,29 +334,6 @@ public class AccountControl extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    private static void UpdateTable() {
-        new AccountControl().setVisible(true);
-        try {
-            Connection conn = ConnectDB.getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Account");
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                String username = String.valueOf(rs.getString("Username"));
-                String password = String.valueOf(rs.getString("Password"));
-                boolean isAdmin = rs.getInt("AccType") == 1;
-
-                Object tbdata[] = {username, password, isAdmin};
-                DefaultTableModel tbModel = (DefaultTableModel) tableAccountList.getModel();
-                tbModel.addRow(tbdata);
-            }
-
-            tableAccountList.setRowSelectionInterval(0, 0);
-        } catch (SQLException ex) {
-            Logger.getLogger(AccountControl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -350,10 +345,12 @@ public class AccountControl extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AccountControl.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountControl.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -361,7 +358,7 @@ public class AccountControl extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            UpdateTable();
+            new AccountControl().setVisible(true);
         });
     }
 
@@ -372,12 +369,14 @@ public class AccountControl extends javax.swing.JFrame {
     private javax.swing.JButton btnEditAccount;
     private javax.swing.JButton btnResetInfo;
     private javax.swing.JCheckBox cbAdmin;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelAccountControl;
     private javax.swing.JLabel labelAdminCb;
+    private javax.swing.JLabel labelID;
     private javax.swing.JLabel labelPasswordAC;
     private javax.swing.JLabel labelUsernameAC;
-    private static javax.swing.JTable tableAccountList;
+    private javax.swing.JScrollPane spAccountList;
+    private javax.swing.JTable tableAccountList;
+    private javax.swing.JTextField tfID;
     private javax.swing.JTextField tfPassword;
     private javax.swing.JTextField tfUsername;
     // End of variables declaration//GEN-END:variables

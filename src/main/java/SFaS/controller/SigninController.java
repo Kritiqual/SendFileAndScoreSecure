@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class SigninController {
 
     private static final String FINDUSER = "SELECT COUNT(*) FROM Account WHERE Username = ? AND Password = ?";
-    private static final String ACCTYPE = "SELECT AccType FROM Account WHERE Username = ? AND Password = ?";
+    private static final String ISADMIN = "SELECT IsAdmin FROM Account WHERE Username = ? AND Password = ?";
 
     public static String onSigninEvent(Account acc) {
         try {
@@ -36,7 +36,7 @@ public class SigninController {
                 return "Không tìm thấy tài khoản!";
             }
 
-            ps = conn.prepareStatement(ACCTYPE);
+            ps = conn.prepareStatement(ISADMIN);
             ps.setString(1, acc.getUsername());
             ps.setString(2, acc.getPassword());
             rs = ps.executeQuery();

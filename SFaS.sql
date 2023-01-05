@@ -8,57 +8,73 @@
  */
 
 USE master
-GO
 
 DROP DATABASE IF EXISTS SFaS
-GO
 
 CREATE DATABASE SFaS
-GO
 
 USE SFaS
-GO
 
 ------- Table -------
 -- Account --
 CREATE TABLE Account (
-    Username VARCHAR(25) CONSTRAINT pk_Username PRIMARY KEY,
+    AccID INT IDENTITY(1,1) PRIMARY KEY,
+    Username VARCHAR(25) NOT NULL,
     Password VARCHAR(16) NOT NULL,
-    AccType INT NOT NULL DEFAULT 0 -- 0: Student, 1: admin, 2: Teacher
+    IsAdmin INT NOT NULL DEFAULT 0 -- 1: Admin, 0: Teacher
 )
-GO
+
 -- Teacher --
 CREATE TABLE Teacher (
-    TeacherID VARCHAR(15) CONSTRAINT pk_TchID PRIMARY KEY,
+    TeacherID VARCHAR(15) PRIMARY KEY,
     TeacherName NVARCHAR(25) NOT NULL,
     TeacherPos NVARCHAR(20),
     TeacherTel VARCHAR(11),
     TeacherFct NVARCHAR(20)
 )
-GO
 
+-- Class --
 CREATE TABLE ClassMDL (
-    ClassName VARCHAR(25) CONSTRAINT pk_ClassName PRIMARY KEY,
+    ClassID BIGINT IDENTITY(1,1) PRIMARY KEY,
+    ClassName VARCHAR(25) NOT NULL,
     TeacherName VARCHAR(25) NOT NULL
 )
-GO
+
+-- Student --
+CREATE TABLE Student (
+    StuID INT IDENTITY(1,1) PRIMARY KEY,
+    StuName VARCHAR(25) NOT NULL,
+    StuTel VARCHAR(10),
+    StuDoB DATE NOT NULL,
+    StuHome VARCHAR(50) NOT NULL,
+    StuClass VARCHAR(25) NOT NULL,
+    StuFaculty VARCHAR(25) NOT NULL,
+    StuGPA FLOAT NOT NULL
+)
 
 ------- Insert data -------
-INSERT INTO Account (Username, Password, AccType)
+-- Account --
+INSERT INTO Account
 VALUES
-    ('admin', 'adm123', 1),
-    ('teacher', 'tch122', 0);
-GO
+    ('admin', 'adm@123', 1),
+    ('teacher', 'tch@123', 0);
 
+-- Teacher --
 INSERT INTO Teacher
 VALUES
     ('1', 'Teacher A', 'Prof', '0123456789', 'Computer Science'),
     ('2', 'Teacher B', 'Prof', '0124356789', 'Electricity');
-GO
 
+-- Class --
 INSERT INTO ClassMDL
 VALUES
     ('Computer Sciene', 'Teacher A'),
     ('Electricity', 'Teacher B');
-GO
+
+-- Student --
+INSERT INTO Student
+VALUES
+    ('Student A', '0123456789', '01/01/1990', 'Hai Duong', 'IT', 'IT', 3.71),
+    ('Student B', '0223344556', '02/02/2002', 'Ha Noi', 'Mechanic', 'Electric', 2.1),
+    ('Student C', '0334455800', '12/09/2005', 'Ho Chi Minh', 'Computer Science', 'IT', 1.55);
 

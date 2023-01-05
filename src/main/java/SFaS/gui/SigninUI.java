@@ -99,7 +99,6 @@ public class SigninUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSigninActionPerformed(java.awt.event.ActionEvent evt) {
-        // GEN-FIRST:event_btnSigninActionPerformed
         try {
             String username = tfUsername.getText().trim();
             var password = String.valueOf(pfPassword.getPassword()).trim();
@@ -107,8 +106,8 @@ public class SigninUI extends javax.swing.JFrame {
                 throw new Exception("Username hoặc Password không được để trống!");
             }
 
-            JOptionPane.showMessageDialog(this.getContentPane(), SigninController.onSigninEvent(new Account(username, password)), "Thông báo!", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
+            JOptionPane.showMessageDialog(this.getContentPane(), SigninController.onSigninEvent(new Account(username, password)), "Thông báo!", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this.getContentPane(), e.getMessage(), "Thông báo", JOptionPane.OK_OPTION);
         }
@@ -124,13 +123,9 @@ public class SigninUI extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
-        // (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
-         * look and feel.
-         * For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -142,18 +137,6 @@ public class SigninUI extends javax.swing.JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(SigninUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        // </editor-fold>
-        // </editor-fold>
-        // </editor-fold>
-        // </editor-fold>
-        // </editor-fold>
-        // </editor-fold>
-        // </editor-fold>
-        // </editor-fold>
-
-        // </editor-fold>
-        // </editor-fold>
-        // </editor-fold>
         // </editor-fold>
 
         /* Create and display the form */

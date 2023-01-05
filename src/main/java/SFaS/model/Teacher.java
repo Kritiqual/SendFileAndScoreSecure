@@ -4,12 +4,12 @@ package SFaS.model;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author kritiqual
  */
-public class Teacher extends BaseModel {
+public class Teacher {
+
     private int ID;
     private String name, Pos, Tel, Fct;
 
@@ -59,17 +59,6 @@ public class Teacher extends BaseModel {
 
     public void setFct(String Fct) {
         this.Fct = Fct;
-    }
-
-    @Override
-    public Object[] toObjectArrayData() {
-        Object[] answer = new Object[5];
-        answer[0] = ID;
-        answer[1] = name;
-        answer[2] = Pos;
-        answer[3] = Tel;
-        answer[4] = Fct;
-        return answer;
     }
 
 }

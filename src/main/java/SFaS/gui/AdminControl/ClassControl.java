@@ -4,22 +4,17 @@
  */
 package SFaS.gui.AdminControl;
 
-import SFaS.controller.AddAccountController;
-import SFaS.controller.AddClassController;
 import SFaS.controller.ConnectDB;
-import SFaS.controller.DeleteAccountController;
-import SFaS.controller.DeleteClassController;
-import SFaS.controller.EditClassController;
+import SFaS.controller.ClassController;
 import SFaS.gui.AdminUI;
-import SFaS.model.Account;
 import SFaS.model.ClassMdl;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -49,15 +44,22 @@ public class ClassControl extends javax.swing.JFrame {
         tfTeacher = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         tfClass = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tableClassControl = new javax.swing.JTable();
+        spClassList = new javax.swing.JScrollPane();
+        tableClassList = new javax.swing.JTable();
         btnAdd = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnReset = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
+        tfID = new javax.swing.JTextField();
+        labelID = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jLabel1.setText("QUẢN LÝ LỚP");
 
@@ -65,35 +67,13 @@ public class ClassControl extends javax.swing.JFrame {
 
         jLabel3.setText("Teacher");
 
-        tableClassControl.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Class", "Teacher"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tableClassControl.addMouseListener(new java.awt.event.MouseAdapter() {
+        tableClassList.setModel(buildTableModel());
+        tableClassList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableClassControlMouseClicked(evt);
+                tableClassListMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tableClassControl);
+        spClassList.setViewportView(tableClassList);
 
         btnAdd.setText("ADD");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -130,11 +110,16 @@ public class ClassControl extends javax.swing.JFrame {
             }
         });
 
+        tfID.setEditable(false);
+        tfID.setFocusable(false);
+
+        labelID.setText("ID");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -143,63 +128,62 @@ public class ClassControl extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(12, 12, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)))
+                                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(tfClass, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(tfTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labelID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tfClass, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                                    .addComponent(tfTeacher, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                                    .addComponent(tfID))))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(spClassList, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(322, 322, 322))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())))))
+                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(280, 280, 280)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(70, 70, 70)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(tfTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(tfClass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2))))
-                        .addGap(34, 34, 34)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelID))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(tfClass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(tfTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnAdd)
                             .addComponent(btnDelete))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnEdit)
                             .addComponent(btnReset)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(spClassList, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(btnBack)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -207,8 +191,46 @@ public class ClassControl extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void onClear() {
+        tfID.setText("");
         tfClass.setText("");
         tfTeacher.setText("");
+    }
+
+    public static DefaultTableModel buildTableModel() {
+        try {
+            Connection conn = ConnectDB.getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM ClassMDL");
+            ResultSet rs = ps.executeQuery();
+            ResultSetMetaData metaData = rs.getMetaData();
+
+            // names of columns
+            Vector<String> columnNames = new Vector<String>();
+            int columnCount = metaData.getColumnCount();
+            for (int column = 1; column <= columnCount; column++) {
+                columnNames.add(metaData.getColumnName(column));
+            }
+
+            // data of the table
+            Vector<Vector<Object>> tbdata = new Vector<Vector<Object>>();
+            while (rs.next()) {
+                Vector<Object> data = new Vector<Object>();
+                data.add(rs.getInt(1));
+                data.add(rs.getString(2));
+                data.add(rs.getString(3));
+                tbdata.add(data);
+            }
+
+            boolean[] isEditable = {false, false, false};
+            return new DefaultTableModel(tbdata, columnNames) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    // make read only fields except column 0,13,14
+                    return isEditable[column];
+                }
+            };
+        } catch (SQLException e) {
+            return null;
+        }
     }
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
@@ -220,9 +242,10 @@ public class ClassControl extends javax.swing.JFrame {
                 throw new Exception("Không được để trống thông tin!");
             }
 
-            JOptionPane.showMessageDialog(this.getContentPane(), AddClassController.onSignupEvent(new ClassMdl(classname, teacher)), "Thông báo!", JOptionPane.INFORMATION_MESSAGE);
-            UpdateTable();
+            JOptionPane.showMessageDialog(this.getContentPane(), ClassController.onAddEvent(new ClassMdl(classname, teacher)), "Thông báo!", JOptionPane.INFORMATION_MESSAGE);
+            tableClassList.revalidate();
             this.dispose();
+            new ClassControl().setVisible(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this.getContentPane(), e.getMessage(), "Thông Báo", JOptionPane.OK_OPTION);
         }
@@ -230,10 +253,11 @@ public class ClassControl extends javax.swing.JFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         try {
-            String classname = tableClassControl.getModel().getValueAt(tableClassControl.getSelectedRow(), 0).toString();
-            JOptionPane.showMessageDialog(this.getContentPane(), DeleteClassController.onDeleteEvent(classname), "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
-            UpdateTable();
+            String classname = tableClassList.getModel().getValueAt(tableClassList.getSelectedRow(), 0).toString();
+            JOptionPane.showMessageDialog(this.getContentPane(), ClassController.onDeleteEvent(classname), "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
+            tableClassList.revalidate();
             this.dispose();
+            new ClassControl().setVisible(true);
 
         } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(this.getContentPane(), e.getMessage(), "Thông Báo", JOptionPane.OK_OPTION);
@@ -242,28 +266,15 @@ public class ClassControl extends javax.swing.JFrame {
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         try {
-            Connection conn = ConnectDB.getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM ClassMDL");
-            ResultSet rs = ps.executeQuery();
-            String cncheck = String.valueOf(rs.getString("ClassName"));
-            String tccheck = String.valueOf(rs.getString("TeacherName"));
-
             String classname = tfClass.getText().trim();
             String teacher = tfTeacher.getText().trim();
+            var classid = Integer.valueOf(tableClassList.getModel().getValueAt(tableClassList.getSelectedRow(), 0).toString());
 
-            ClassMdl classmdl = new ClassMdl(classname, teacher);
-            String edit = "UPDATE ClassMDL";
-            if (!cncheck.equals(classname)) {
-                edit += " SET ClassName = ?";
-            }
-            if (!tccheck.equals(teacher)) {
-                edit += " SET TeacherName = ?";
-            }
-
-            JOptionPane.showMessageDialog(this.getContentPane(), EditClassController.onEditEvent(classmdl, edit), "Thông báo!", JOptionPane.INFORMATION_MESSAGE);
-            UpdateTable();
+            JOptionPane.showMessageDialog(this.getContentPane(), ClassController.onEditEvent(new ClassMdl(classname, teacher, classid)), "Thông báo!", JOptionPane.INFORMATION_MESSAGE);
+            tableClassList.revalidate();
             this.dispose();
-        } catch (HeadlessException | SQLException e) {
+            new ClassControl().setVisible(true);
+        } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(this.getContentPane(), e.getMessage(), "Thông Báo", JOptionPane.OK_OPTION);
         }
     }//GEN-LAST:event_btnEditActionPerformed
@@ -277,38 +288,21 @@ public class ClassControl extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
 
-    private void tableClassControlMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableClassControlMouseClicked
-        int selected = tableClassControl.getSelectedRow();
-        TableModel model = tableClassControl.getModel();
-        tfClass.setText(model.getValueAt(selected, 0).toString());
-        tfTeacher.setText(model.getValueAt(selected, 1).toString());
-    }//GEN-LAST:event_tableClassControlMouseClicked
+    private void tableClassListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableClassListMouseClicked
+        int selected = tableClassList.getSelectedRow();
+        TableModel model = tableClassList.getModel();
+        tfID.setText(model.getValueAt(selected, 0).toString());
+        tfClass.setText(model.getValueAt(selected, 1).toString());
+        tfTeacher.setText(model.getValueAt(selected, 2).toString());
+    }//GEN-LAST:event_tableClassListMouseClicked
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        new AdminUI().setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments
      */
-    private static void UpdateTable() {
-        new ClassControl().setVisible(true);
-        try {
-            Connection conn = ConnectDB.getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM ClassMDL");
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                String classname = String.valueOf(rs.getString("ClassName"));
-                String teacher = String.valueOf(rs.getString("TeacherName"));
-
-                Object tbdata[] = {classname, teacher};
-                DefaultTableModel tbModel = (DefaultTableModel) tableClassControl.getModel();
-                tbModel.addRow(tbdata);
-            }
-
-            tableClassControl.setRowSelectionInterval(0, 0);
-        } catch (SQLException ex) {
-            Logger.getLogger(AccountControl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -331,7 +325,7 @@ public class ClassControl extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            UpdateTable();
+            new ClassControl().setVisible(true);
         });
     }
 
@@ -344,9 +338,11 @@ public class ClassControl extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private static javax.swing.JTable tableClassControl;
+    private javax.swing.JLabel labelID;
+    private javax.swing.JScrollPane spClassList;
+    private static javax.swing.JTable tableClassList;
     private javax.swing.JTextField tfClass;
+    private javax.swing.JTextField tfID;
     private javax.swing.JTextField tfTeacher;
     // End of variables declaration//GEN-END:variables
 }

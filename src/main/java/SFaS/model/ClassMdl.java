@@ -8,13 +8,21 @@ package SFaS.model;
  *
  * @author kritiqual
  */
-public class ClassMdl extends BaseModel {
+public class ClassMdl {
+
     private String classname;
     private String teachername;
+    private int classid;
 
     public ClassMdl(String classname, String teachername) {
         this.classname = classname;
         this.teachername = teachername;
+    }
+
+    public ClassMdl(String classname, String teachername, int classid) {
+        this.classname = classname;
+        this.teachername = teachername;
+        this.classid = classid;
     }
 
     public String getClassname() {
@@ -33,12 +41,11 @@ public class ClassMdl extends BaseModel {
         this.teachername = teachername;
     }
 
-    @Override
-    public Object[] toObjectArrayData() {
-        Object[] answer = new Object[2];
-        answer[0] = classname;
-        answer[1] = teachername;
-        return answer;
+    public int getClassid() {
+        return classid;
     }
 
+    public void setClassid(int classid) {
+        this.classid = classid;
+    }
 }

@@ -25,7 +25,6 @@ public class SignupUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnG_act = new javax.swing.ButtonGroup();
         labelSignUp = new javax.swing.JLabel();
         labelUsernameSU = new javax.swing.JLabel();
         tfUsernameSU = new javax.swing.JTextField();
@@ -40,6 +39,11 @@ public class SignupUI extends javax.swing.JFrame {
         cbAdmin = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         labelSignUp.setFont(new java.awt.Font("Cantarell", 0, 24)); // NOI18N
         labelSignUp.setText("TẠO TÀI KHOẢN");
@@ -150,9 +154,9 @@ public class SignupUI extends javax.swing.JFrame {
             String username = tfUsernameSU.getText().trim();
             var password = String.valueOf(pfPasswordSU.getPassword()).trim();
             var repassword = String.valueOf(pfRePasswordSU.getPassword()).trim();
-            int acctype = 0;
+            int isadmin = 0;
             if (cbAdmin.isSelected()) {
-                acctype = 1;
+                isadmin = 1;
             }
 
             if ("".equals(username) || "".equals(password) || "".equals(repassword)) {
@@ -163,19 +167,27 @@ public class SignupUI extends javax.swing.JFrame {
                 throw new Exception("Mật khẩu không trùng khớp!");
             }
 
-            JOptionPane.showMessageDialog(this.getContentPane(), SignupController.onSignupEvent(new Account(username, password, acctype)), "Thông báo!", JOptionPane.OK_OPTION);
-            this.dispose();
+            JOptionPane.showMessageDialog(this.getContentPane(), SignupController.onSignupEvent(new Account(username, password, isadmin)), "Thông báo!", JOptionPane.OK_OPTION);
+            onClear();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this.getContentPane(), e.getMessage(), "Thông Báo", JOptionPane.OK_OPTION);
         }
     }//GEN-LAST:event_btnSignupCFActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        onClear();
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    private void onClear() {
         tfUsernameSU.setText("");
         pfPasswordSU.setText("");
         pfRePasswordSU.setText("");
         cbAdmin.setSelected(false);
-    }//GEN-LAST:event_btnResetActionPerformed
+    }
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        new SigninUI().setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
 
     private void btnSignupCCActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSignupCCActionPerformed
         new SigninUI().setVisible(true);
@@ -187,8 +199,7 @@ public class SignupUI extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
-        // (optional) ">
+        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /*
          * If Nimbus (introduced in Java SE 6) is not available, stay with the default
          * look and feel.
@@ -218,7 +229,6 @@ public class SignupUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup btnG_act;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSignupCC;
     private javax.swing.JButton btnSignupCF;
